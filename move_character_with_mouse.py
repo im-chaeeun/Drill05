@@ -31,15 +31,10 @@ def character_move_to_mouse():
         # 캐릭터를 현재 위치에 그리기
         if mouse_x - x1 >= 0 :
             character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
-            #character.clip_composite_draw(frame * 100, 0, 100, 100, 0, 'h', x, y, 200, 200)
         elif mouse_x - x1 < 0 :
-            #character.clip_composite_draw(frame * 100, 0, 100, 100, 0, 'h', x, y, 100, 100)
             character.clip_draw(frame * 100, 0, 100, 100, x, y)
         delay(0.01)
         update_canvas()
-
-    #character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
-
 
 def handle_events():
     global running
@@ -53,8 +48,6 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
     pass
-
-
 
 running = True
 x, y = TUK_WIDTH // 2, TUK_HEIGHT // 2
