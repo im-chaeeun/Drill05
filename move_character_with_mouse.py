@@ -10,7 +10,7 @@ character = load_image('animation_sheet.png')
 mouse = load_image('hand_arrow.png')
 
 def character_move_to_mouse():
-    global mouse_x, mouse_y, x, y, x1, x2
+    global mouse_x, mouse_y, x, y, x1, x2, dir, frame
 
     if mouse_x == x and mouse_y == y:
         mouse_x, mouse_y = random.randint(0, TUK_WIDTH), random.randint(0, TUK_HEIGHT)
@@ -27,13 +27,18 @@ def character_move_to_mouse():
         clear_canvas()
         TUK_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
         mouse.clip_draw(0, 0, 50, 52, mouse_x, mouse_y)
-
+        frame = (frame + 1) % 8
         # 캐릭터를 현재 위치에 그리기
-        character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
+        if mouse_x - x1 >= 0 :
+            character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
+            #character.clip_composite_draw(frame * 100, 0, 100, 100, 0, 'h', x, y, 200, 200)
+        elif mouse_x - x1 < 0 :
+            #character.clip_composite_draw(frame * 100, 0, 100, 100, 0, 'h', x, y, 100, 100)
+            character.clip_draw(frame * 100, 0, 100, 100, x, y)
         delay(0.01)
         update_canvas()
 
-    character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
+    #character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
 
 
 def handle_events():
@@ -56,10 +61,7 @@ x, y = TUK_WIDTH // 2, TUK_HEIGHT // 2
 mouse_x, mouse_y = random.randint(0, 1000), random.randint(0, 1000)
 x1, y1 = TUK_WIDTH // 2, TUK_HEIGHT // 2
 frame = 0
-character_delay = 0.05  # 캐릭터의 딜레이
-mouse_delay = 2.0  # 마우스 위치 변경 딜레이
-character_timer = 0.0  # 캐릭터 딜레이 타이머 초기화
-mouse_timer = 0.0  # 마우스 딜레이 타이머 초기화
+dir=0
 hide_cursor()
 
 while running:
@@ -69,7 +71,6 @@ while running:
     mouse.clip_draw(0, 0, 50, 52, mouse_x, mouse_y)
     character_move_to_mouse()
     update_canvas()
-    frame = (frame + 1) % 8
     handle_events()
 
 
