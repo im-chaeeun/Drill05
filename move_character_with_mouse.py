@@ -13,14 +13,28 @@ def character_move_to_mouse():
     global mouse_x, mouse_y, x, y, x1, x2
 
     if mouse_x == x and mouse_y == y:
-        mouse_x, mouse_y = random.randint(0, 1000), random.randint(0, 1000)
-    else:
-        x1, y1 = x, y
-        for i in range(0, 100+1, 4):
-            t = i/100
-            x = (1-t) * x1 + t * mouse_x
-            y = (1-t) * y1 + t * mouse_y
-            character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
+        mouse_x, mouse_y = random.randint(0, TUK_WIDTH), random.randint(0, TUK_HEIGHT)
+        mouse.clip_draw(0, 0, 50, 52, mouse_x, mouse_y)
+
+
+    x1, y1 = x, y
+    for i in range(0, 100 + 1, 1):
+        t = i / 100
+        x = (1 - t) * x1 + t * mouse_x
+        y = (1 - t) * y1 + t * mouse_y
+
+        # 이전 위치에 그려진 캐릭터를 지우기
+        clear_canvas()
+        TUK_ground.draw(TUK_WIDTH // 2, TUK_HEIGHT // 2)
+        mouse.clip_draw(0, 0, 50, 52, mouse_x, mouse_y)
+
+        # 캐릭터를 현재 위치에 그리기
+        character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
+        delay(0.01)
+        update_canvas()
+
+    character.clip_draw(frame * 100, 100 * 1, 100, 100, x, y)
+
 
 def handle_events():
     global running
@@ -57,7 +71,7 @@ while running:
     update_canvas()
     frame = (frame + 1) % 8
     handle_events()
-    delay(0.3)
+
 
 close_canvas()
 
